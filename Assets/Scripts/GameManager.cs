@@ -279,6 +279,18 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning($"Attempted to remove an enemy grid position that wasn't spawned: {gridPos}");
         }
     }
+    
+    /// <summary>
+    /// Handles player death.
+    /// </summary>
+    public void PlayerDied()
+    {
+        Debug.Log("Player has died.");
+        // Implement sound and particle effects here when implemented
+        // Example:
+        // AudioSource.PlayClipAtPoint(deathSound, transform.position);
+        // Instantiate(deathParticles, transform.position, Quaternion.identity);
+    }
 
     /// <summary>
     /// Shuffles a list in place using Fisher-Yates algorithm.

@@ -34,12 +34,20 @@ public class PlayerController : MonoBehaviour
     private MovementState currentState = MovementState.Idle;
 
     private Vector3 movementDirection = Vector3.zero; // Direction of movement
+    // Reference to GameManager
+    private GameManager gameManager;
 
     void Start()
     {
         resizeShape = GetComponent<ResizeShape>();
         drawShape = GetComponent<DrawShape>();
         drawShape.SetPolygon(12, 0.5f, 0.4f, false, EntityType.Player);
+
+        gameManager = FindFirstObjectByType<GameManager>();
+        if (gameManager == null)
+        {
+            Debug.LogError("GameManager not found in the scene.");
+        }
     }
 
     // Update is called once per frame
@@ -133,5 +141,21 @@ public class PlayerController : MonoBehaviour
         {
             mainCamera.transform.position = new Vector3(transform.position.x, transform.position.y, mainCamera.transform.position.z);
         }
+    }
+
+    public void Die()
+    {
+        // Play death sounds and particles
+        // deathAudio.Play(); // Uncomment when AudioSource is added
+        // deathParticles.Play(); // Uncomment when ParticleSystem is added
+
+        // Notify GameManager
+        if (gameManager != null)
+        {
+            gameManager.PlayerDied();
+        }
+
+        // Destroy the player object
+        Destroy(gameObject);
     }
 }

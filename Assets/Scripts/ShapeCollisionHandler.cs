@@ -34,7 +34,10 @@ public class ShapeCollisionHandler : MonoBehaviour
 
     void HandlePlayerEnemyCollision(GameObject enemy)
     {
-        Debug.Log("Player Collided with enemy: " + enemy.name);
-        // Add additional enemy collision handling here
+        PlayerController playerController = GetComponent<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.Die();
+        }
     }
 }
