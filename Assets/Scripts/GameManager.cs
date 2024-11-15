@@ -1,18 +1,20 @@
 using System.Collections.Generic;
+using Unity.Mathematics.Geometry;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject enemyPrefab;
-    List<DrawShape> shapes = new List<DrawShape>();
-
+    public GameObject playerGO;
+    public GameObject foodPrefab;
     private float polygonOuterRadius = 0.5f;
     private float polygonThickness = 0.1f;
-    private float gridWidth = 10;
-    private float gridHeight = 10;
+    private int gridWidth = 10;
+    private int gridHeight = 10;
 
     private int lastTick = 0;
-    private int tickRate = 10000;
+    [SerializeField]
+    private int tickRate = 1;
+    HashSet<Vector3> spawnedPositions = new HashSet<Vector3>();
 
     void Start()
     {
@@ -24,16 +26,16 @@ public class GameManager : MonoBehaviour
         if (lastTick == 0 || Time.frameCount - lastTick > tickRate)
         {
             lastTick = Time.frameCount;
-            List<Vector3> positions = GetGridPositions(0, 0, gridWidth, gridHeight);
+            var playerPos = playerGO.transform.position;
+            List<Vector3> positions = GetGridPositions(Mathf.CeilToInt(playerPos.x), Mathf.CeilToInt(playerPos.y), gridWidth, gridHeight);
             foreach (Vector3 position in positions)
             {
-                DrawShape shape = SpawnEnemy(position, polygonThickness, polygonOuterRadius, 6);
-                shapes.Add(shape);
+                SpawnFood(position, polygonThickness, polygonOuterRadius, 6);
             }
         }
     }
 
-    DrawShape SpawnEnemy(Vector3 position, float thickness, float maxRadius, int sides)
+    DrawShape SpawnFood(Vector3 position, float thickness, float maxRadius, int sides)
     {
         float randomFactor = Random.Range(0.4f, 0.8f);
         float randomRadius = maxRadius * randomFactor;
@@ -43,28 +45,33 @@ public class GameManager : MonoBehaviour
         float randomY = position.y + Random.Range(-diameterDifference, diameterDifference);
 
         Vector3 randomPosition = new Vector3(randomX, randomY, 0);
-        GameObject enemy = Instantiate(enemyPrefab, randomPosition, Quaternion.identity);
-        DrawShape shape = enemy.GetComponent<DrawShape>();
+        GameObject food = Instantiate(foodPrefab, randomPosition, Quaternion.identity);
+        DrawShape shape = food.GetComponent<DrawShape>();
         shape.SetPolygon(sides, randomRadius, randomRadius - thickness, false);
         
         return shape;
     }
 
-    List<Vector3> GetGridPositions(float x, float y, float width, float height)
+    List<Vector3> GetGridPositions(int x, int y, int width, int height)
     {
         List<Vector3> positions = new List<Vector3>();
-        float minWidth = x - width / 2.0f;
-        float minHeight = y - height / 2.0f;
+        int minWidth = x - width / 2;
+        int minHeight = y - height / 2;
 
-        for (float i = minWidth; i < minWidth + width; i++)
+        for (int i = minWidth; i < minWidth + width; i++)
         {
-            for (float j = minHeight; j < minHeight + height; j++)
+            for (int j = minHeight; j < minHeight + height; j++)
             {
                 if (i == x && j == y)
                 {
                     continue;
                 }
-                positions.Add(new Vector3(i, j, 0));
+                Vector3 position = new Vector3(i, j, 0);
+                if (!spawnedPositions.Contains(position))
+                {
+                    positions.Add(position);
+                    spawnedPositions.Add(position);
+                }
             }
         }
 
