@@ -5,9 +5,11 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [Header("References")]
-    public GameObject playerGO;
+    public GameObject playerPrefab;
     public GameObject foodPrefab;
-    public GameObject enemyPrefab; // Enemy Prefab
+    public GameObject enemyPrefab;
+    private GameObject playerGameObject;
+
 
     [Header("Food Settings")]
     [SerializeField]
@@ -43,9 +45,9 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         // Validate References
-        if (playerGO == null)
+        if (playerPrefab == null)
         {
-            Debug.LogError("Player GameObject is not assigned in the GameManager.");
+            Debug.LogError("Player Prefab is not assigned in the GameManager.");
         }
 
         if (foodPrefab == null)
@@ -62,6 +64,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        HandleInput();
         if (Time.frameCount - lastTick > tickRate)
         {
             lastTick = Time.frameCount;
@@ -69,17 +72,48 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    
+
+    private void HandleInput()
+    {
+        if (playerGameObject != null) return;
+        if (Input.anyKeyDown || Input.anyKey)
+        {
+            SpawnPlayer(true);
+        }
+    }
+
+    void SpawnPlayer(bool checkKey)
+    {
+        if (playerPrefab == null)
+        {
+            Debug.LogError("Player Prefab is not assigned in the GameManager.");
+            return;
+        }
+
+        if (playerGameObject != null)
+        {
+            Destroy(playerGameObject);
+        }
+
+        playerGameObject = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        var drawShape = playerGameObject.GetComponent<DrawShape>();
+        drawShape.SetPolygon(12, 0.5f, 0.4f, false, EntityType.Player);
+        var playerController = playerGameObject.GetComponent<PlayerController>();
+        playerController.SetGetKey(checkKey);
+    }
+
     /// <summary>
     /// Spawns enemies and food around the player's current position based on defined conditions.
     /// </summary>
     void SpawnEntitiesAroundPlayer()
     {
-        if (playerGO == null || foodPrefab == null || enemyPrefab == null)
+        if (playerGameObject == null || foodPrefab == null || enemyPrefab == null)
         {
             return; // Early exit if references are missing
         }
 
-        Vector3 playerPos = playerGO.transform.position;
+        Vector3 playerPos = playerGameObject.transform.position;
         Vector2Int playerGridPos = new Vector2Int(Mathf.FloorToInt(playerPos.x), Mathf.FloorToInt(playerPos.y));
 
         List<Vector3> gridPositions = GetGridPositions(playerGridPos.x, playerGridPos.y, gridWidth, gridHeight, hasInitialSpawnOccurred);
@@ -279,17 +313,31 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning($"Attempted to remove an enemy grid position that wasn't spawned: {gridPos}");
         }
     }
-    
+
     /// <summary>
     /// Handles player death.
     /// </summary>
     public void PlayerDied()
     {
+        ResetGame();
+        SpawnPlayer(false);
         Debug.Log("Player has died.");
         // Implement sound and particle effects here when implemented
         // Example:
         // AudioSource.PlayClipAtPoint(deathSound, transform.position);
         // Instantiate(deathParticles, transform.position, Quaternion.identity);
+    }
+
+    private void ResetGame()
+    {
+        if (playerGameObject != null)
+        {
+            Destroy(playerGameObject);
+        }
+        spawnedFoodPositions.Clear();
+        spawnedEnemyPositions.Clear();
+        hasInitialSpawnOccurred = false;
+        lastTick = 0;
     }
 
     /// <summary>

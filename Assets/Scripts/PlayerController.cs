@@ -6,7 +6,6 @@ public class PlayerController : MonoBehaviour
 {
     // Components
     Camera mainCamera;
-    DrawShape drawShape;
     ResizeShape resizeShape;
 
     // Scaling variables
@@ -22,6 +21,8 @@ public class PlayerController : MonoBehaviour
     private float continuousSpeed = 5f; // Slower speed for continuous movement
 
     private Vector3? targetPosition = null; // Nullable Vector3 to store the target position
+
+    public bool checkKey { get; private set; }
 
     // Movement state enumeration
     private enum MovementState
@@ -40,8 +41,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         resizeShape = GetComponent<ResizeShape>();
-        drawShape = GetComponent<DrawShape>();
-        drawShape.SetPolygon(12, 0.5f, 0.4f, false, EntityType.Player);
 
         gameManager = FindFirstObjectByType<GameManager>();
         if (gameManager == null)
@@ -141,6 +140,11 @@ public class PlayerController : MonoBehaviour
         {
             mainCamera.transform.position = new Vector3(transform.position.x, transform.position.y, mainCamera.transform.position.z);
         }
+    }
+
+    public void SetGetKey(bool value)
+    {
+        checkKey = value;
     }
 
     public void Die()

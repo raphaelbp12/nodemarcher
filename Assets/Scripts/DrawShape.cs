@@ -37,7 +37,11 @@ public class DrawShape : MonoBehaviour
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
         resizeShape = GetComponent<ResizeShape>();
-        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        var playerGO = GameObject.FindWithTag("Player");
+        if (playerGO != null)
+        {
+            playerController = playerGO.GetComponent<PlayerController>();
+        }
         gameManager = FindFirstObjectByType<GameManager>();
         if (gameManager == null)
         {
@@ -85,6 +89,10 @@ public class DrawShape : MonoBehaviour
 
     public float GetDistanceToPlayer()
     {
+        if (entityType == EntityType.Player)
+        {
+            return 0;
+        }
         if (playerController == null)
             return Mathf.Infinity;
         return Vector3.Distance(playerController.transform.position, transform.position);

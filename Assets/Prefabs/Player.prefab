@@ -12,6 +12,18 @@ PrefabInstance:
       propertyPath: rotationRangePercentage
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -2175035590284278869, guid: f870192b5d7db3744b3fbed948a7d0a4, type: 3}
+      propertyPath: expandSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -2175035590284278869, guid: f870192b5d7db3744b3fbed948a7d0a4, type: 3}
+      propertyPath: shrinkSpeed
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: -2175035590284278869, guid: f870192b5d7db3744b3fbed948a7d0a4, type: 3}
+      propertyPath: defaultScale
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 1813330710974313654, guid: f870192b5d7db3744b3fbed948a7d0a4, type: 3}
       propertyPath: color.b
       value: 0.9339623
@@ -82,9 +94,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2940892100800383924, guid: f870192b5d7db3744b3fbed948a7d0a4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 545472251043834474}
-    - targetCorrespondingSourceObject: {fileID: 2940892100800383924, guid: f870192b5d7db3744b3fbed948a7d0a4, type: 3}
-      insertIndex: -1
       addedObject: {fileID: -6515604045568534936}
   m_SourcePrefab: {fileID: 100100000, guid: f870192b5d7db3744b3fbed948a7d0a4, type: 3}
 --- !u!1 &4141911934659385921 stripped
@@ -92,21 +101,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2940892100800383924, guid: f870192b5d7db3744b3fbed948a7d0a4, type: 3}
   m_PrefabInstance: {fileID: 1273150064741011957}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &545472251043834474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4141911934659385921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23e0ef90eea8b6c45aa0fd274db1ae4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultScale: 0.1
-  expandSpeed: 2
-  shrinkSpeed: 8
 --- !u!114 &-6515604045568534936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,3 +113,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 873fac55bdf1c6a449dbbee4effe4653, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportSpeed: 5
+  continuousSpeed: 0.6
