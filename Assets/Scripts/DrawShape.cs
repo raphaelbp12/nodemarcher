@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(PolygonCollider2D))]
+[RequireComponent(typeof(ResizeShape))]
 public class DrawShape : MonoBehaviour
 {
     Mesh mesh;
@@ -27,11 +28,14 @@ public class DrawShape : MonoBehaviour
     private float distanceToBeDisabled = 5f; // Adjusted to a more reasonable distance
 
     PlayerController playerController;
+    ResizeShape resizeShape;
 
     void Start()
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
+        resizeShape = GetComponent<ResizeShape>();
+
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
 
         // Find and reference the GameManager in the scene
@@ -54,11 +58,22 @@ public class DrawShape : MonoBehaviour
             DrawHollow(polygonSides, polygonOuterRadius, polygonInnerRadius);
         }
         SetPolygonCollider();
+        SetDefaultScale();
     }
 
     void FixedUpdate()
     {
         DisableIfTooFar();
+    }
+
+    void SetDefaultScale()
+    {
+        var selfPlayer = GetComponent<PlayerController>();
+        if (selfPlayer != null)
+        {
+            return;
+        }
+        resizeShape.SetScale(1.0f);
     }
 
     void DisableIfTooFar()

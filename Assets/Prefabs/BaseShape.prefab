@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 91505439031934780}
   - component: {fileID: -7128594442821157504}
   - component: {fileID: 3647068234404883095}
+  - component: {fileID: -2175035590284278869}
   m_Layer: 8
   m_Name: BaseShape
   m_TagString: Enemy
@@ -223,3 +224,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb63acb05c93074893ea51a4f5c516f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-2175035590284278869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2940892100800383924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23e0ef90eea8b6c45aa0fd274db1ae4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultScale: 0.1
+  expandSpeed: 4
+  shrinkSpeed: 2
