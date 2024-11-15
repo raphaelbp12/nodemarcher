@@ -36,6 +36,11 @@ public class DrawShape : MonoBehaviour
         SetPolygonCollider();
     }
 
+    public void DestroyShape()
+    {
+        Destroy(gameObject);
+    }
+
     public void SetPolygon(int sides, float outerRadius, float innerRadius, bool filled)
     {
         polygonSides = sides;

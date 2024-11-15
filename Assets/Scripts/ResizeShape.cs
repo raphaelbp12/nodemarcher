@@ -4,9 +4,13 @@ using UnityEngine;
 public class ResizeShape : MonoBehaviour
 {
     DrawShape drawShape;
-    float desiredScale = 1.0f;
-    float currentScale = 1.0f;
+    [SerializeField]
+    float defaultScale = 0.1f;
+    float currentScale;
+    float desiredScale;
+    [SerializeField]
     float expandSpeed = 2f;
+    [SerializeField]
     float shrinkSpeed = 2f;
 
     float originalOuterRadius;
@@ -16,6 +20,9 @@ public class ResizeShape : MonoBehaviour
         drawShape = GetComponent<DrawShape>();
         originalOuterRadius = drawShape.polygonOuterRadius;
         originalInnerRadius = drawShape.polygonInnerRadius;
+
+        currentScale = defaultScale;
+        desiredScale = defaultScale;
     }
 
     // Update is called once per frame
@@ -41,8 +48,13 @@ public class ResizeShape : MonoBehaviour
         drawShape.SetPolygon(drawShape.polygonSides, originalOuterRadius * currentScale, originalInnerRadius * currentScale, drawShape.isFilled);      
     }
 
-    public void SetScale(float scale)
+    public void SetScale(float? scale)
     {
-        desiredScale = scale;
+        if (scale == null)
+        {
+            desiredScale = defaultScale;
+            return;
+        }
+        desiredScale = scale.Value;
     }
 }

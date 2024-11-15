@@ -19,7 +19,15 @@ public class ShapeCollisionHandler : MonoBehaviour
 
     void HandlePlayerFoodCollision(GameObject food)
     {
-        Debug.Log("Player Collided with food" + food.gameObject.name);
+        PlayerController playerController = gameObject.GetComponent<PlayerController>();
+        DrawShape foodShape = food.GetComponent<DrawShape>();
+        if (playerController == null)
+        {
+            return;
+        }
+
+        playerController.TeleportTo(food.transform.position);
+        foodShape.DestroyShape();
     }
 
     void HandlePlayerEnemyCollision(GameObject enemy)

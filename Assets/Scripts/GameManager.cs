@@ -35,10 +35,10 @@ public class GameManager : MonoBehaviour
 
     DrawShape SpawnEnemy(Vector3 position, float thickness, float maxRadius, int sides)
     {
-        float randomFactor = Random.Range(0.6f, 1.0f);
+        float randomFactor = Random.Range(0.4f, 0.8f);
         float randomRadius = maxRadius * randomFactor;
 
-        float diameterDifference = (maxRadius - randomRadius) * 2;
+        float diameterDifference = (maxRadius - randomRadius) * 2 * 0.5f;
         float randomX = position.x + Random.Range(-diameterDifference, diameterDifference);
         float randomY = position.y + Random.Range(-diameterDifference, diameterDifference);
 
