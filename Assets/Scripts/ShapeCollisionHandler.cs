@@ -22,12 +22,13 @@ public class ShapeCollisionHandler : MonoBehaviour
     {
         PlayerController playerController = GetComponent<PlayerController>();
         DrawShape foodShape = food.GetComponent<DrawShape>();
+        ResizeShape foodResizeShape = food.GetComponent<ResizeShape>();
         if (playerController == null)
         {
             return;
         }
 
-        playerController.TeleportTo(food.transform.position);
+        playerController.TeleportTo(food.transform.position, foodResizeShape);
         foodShape.DestroyShape();
     }
 

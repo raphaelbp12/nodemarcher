@@ -106,14 +106,21 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
+
+    private void TransformToSize(ResizeShape targetResizeShape)
+    {
+        float scale = targetResizeShape.originalOuterRadius / resizeShape.originalOuterRadius;
+        resizeShape.OverrideShape(scale);
+    }
     
-    public void TeleportTo(Vector3 position)
+    public void TeleportTo(Vector3 position, ResizeShape targetResizeShape)
     {
         targetPosition = new Vector3(position.x, position.y);
         // Calculate direction from current position to target
         movementDirection = (targetPosition.Value - transform.position).normalized;
         // Set state to Teleporting
         currentState = MovementState.Teleporting;
+        TransformToSize(targetResizeShape);
     }
 
     void UpdateCamera()

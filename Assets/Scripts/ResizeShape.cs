@@ -13,7 +13,7 @@ public class ResizeShape : MonoBehaviour
     [SerializeField]
     float shrinkSpeed = 2f;
 
-    float originalOuterRadius;
+    public float originalOuterRadius { get; private set; }
     float originalInnerRadius;
     void Start()
     {
@@ -45,7 +45,13 @@ public class ResizeShape : MonoBehaviour
             }
         }
         // transform.localScale = new Vector3(currentScale, currentScale, currentScale);
-        drawShape.SetPolygon(drawShape.polygonSides, originalOuterRadius * currentScale, originalInnerRadius * currentScale, drawShape.isFilled, drawShape.entityType);      
+        drawShape.SetPolygon(drawShape.polygonSides, originalOuterRadius * currentScale, originalInnerRadius * currentScale, drawShape.isFilled, drawShape.entityType);
+    }
+
+    public void OverrideShape(float scale)
+    {
+        currentScale = scale;
+        drawShape.SetPolygon(drawShape.polygonSides, originalOuterRadius * currentScale, originalInnerRadius * currentScale, drawShape.isFilled, drawShape.entityType);
     }
 
     public void SetScale(float? scale)
