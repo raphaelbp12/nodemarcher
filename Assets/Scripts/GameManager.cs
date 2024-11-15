@@ -45,10 +45,7 @@ public class GameManager : MonoBehaviour
         Vector3 randomPosition = new Vector3(randomX, randomY, 0);
         GameObject enemy = Instantiate(enemyPrefab, randomPosition, Quaternion.identity);
         DrawShape shape = enemy.GetComponent<DrawShape>();
-        shape.isFilled = false;
-        shape.polygonSides = sides;
-        shape.polygonOuterRadius = randomRadius;
-        shape.polygonInnerRadius = randomRadius - thickness;
+        shape.SetPolygon(sides, randomRadius, randomRadius - thickness, false);
         
         return shape;
     }

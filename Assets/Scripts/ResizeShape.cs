@@ -38,8 +38,7 @@ public class ResizeShape : MonoBehaviour
             }
         }
         // transform.localScale = new Vector3(currentScale, currentScale, currentScale);
-        drawShape.polygonOuterRadius = originalOuterRadius * currentScale;
-        drawShape.polygonInnerRadius = originalInnerRadius * currentScale;        
+        drawShape.SetPolygon(drawShape.polygonSides, originalOuterRadius * currentScale, originalInnerRadius * currentScale, drawShape.isFilled);      
     }
 
     public void SetScale(float scale)

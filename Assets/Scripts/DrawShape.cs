@@ -4,23 +4,24 @@ using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
+[RequireComponent(typeof(PolygonCollider2D))]
 public class DrawShape : MonoBehaviour
 {
     Mesh mesh;
     Vector3[] polygonPoints;
     int[] polygonTriangles;
 
-    public bool isFilled;
-    public int polygonSides;
-    public float polygonOuterRadius;
-    public float polygonInnerRadius;
+    public bool isFilled { get; private set; }
+    public int polygonSides { get; private set; }
+
+    public float polygonOuterRadius { get; private set; }
+    public float polygonInnerRadius { get; private set; }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -32,6 +33,29 @@ public class DrawShape : MonoBehaviour
         {
             DrawHollow(polygonSides, polygonOuterRadius, polygonInnerRadius);
         }
+        SetPolygonCollider();
+    }
+
+    public void SetPolygon(int sides, float outerRadius, float innerRadius, bool filled)
+    {
+        polygonSides = sides;
+        polygonOuterRadius = outerRadius;
+        polygonInnerRadius = innerRadius;
+        isFilled = filled;
+        SetPolygonCollider();
+    }
+
+    void SetPolygonCollider()
+    {
+        if (polygonPoints == null || polygonPoints.Length == 0)
+        {
+            return;
+        }
+        PolygonCollider2D polygonCollider = GetComponent<PolygonCollider2D>();
+        polygonCollider.pathCount = 1;
+        Vector2[] polygonPoints2D = Array.ConvertAll(polygonPoints, v => new Vector2(v.x, v.y));
+        polygonCollider.SetPath(0, polygonPoints2D);
+        polygonCollider.isTrigger = true;
     }
 
     void DrawHollow(int sides, float outerRadius, float innerRadius)
@@ -59,13 +83,13 @@ public class DrawShape : MonoBehaviour
         {
             int outerIndex = i;
             int innerIndex = i + sides;
-            
+
             newTriangles.Add(outerIndex);
             newTriangles.Add(innerIndex);
             newTriangles.Add((i + 1) % sides);
 
             newTriangles.Add(outerIndex);
-            newTriangles.Add(sides + ((sides+i-1)%sides));
+            newTriangles.Add(sides + ((sides + i - 1) % sides));
             newTriangles.Add(outerIndex + sides);
         }
         return newTriangles.ToArray();
@@ -96,7 +120,7 @@ public class DrawShape : MonoBehaviour
     private List<Vector3> GetCircumferencePoints(int sides, float radius)
     {
         List<Vector3> points = new List<Vector3>();
-        float circumferenceProgressPerStep = (float)1/sides;
+        float circumferenceProgressPerStep = (float)1 / sides;
         float TAU = Mathf.PI * 2;
         float radianProgressPerStep = TAU * circumferenceProgressPerStep;
 
