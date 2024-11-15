@@ -16,12 +16,32 @@ public class DrawShape : MonoBehaviour
 
     public float polygonOuterRadius { get; private set; }
     public float polygonInnerRadius { get; private set; }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    // Grid position where this shape was spawned
+    public Vector3 gridPosition { get; private set; }
+
+    // Reference to the GameManager
+    private GameManager gameManager;
+
+    [SerializeField]
+    private float distanceToBeDisabled = 5f; // Adjusted to a more reasonable distance
+
+    PlayerController playerController;
+
     void Start()
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
+        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+
+        // Find and reference the GameManager in the scene
+        gameManager = FindFirstObjectByType<GameManager>();
+        if (gameManager == null)
+        {
+            Debug.LogError("GameManager not found in the scene.");
+        }
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -36,8 +56,35 @@ public class DrawShape : MonoBehaviour
         SetPolygonCollider();
     }
 
+    void FixedUpdate()
+    {
+        DisableIfTooFar();
+    }
+
+    void DisableIfTooFar()
+    {
+        if (GetDistanceToPlayer() > distanceToBeDisabled)
+        {
+            // Notify GameManager and destroy this object
+            if (gameManager != null)
+            {
+                gameManager.RemoveSpawnedPosition(gridPosition);
+            }
+            Destroy(gameObject);
+        }
+    }
+
+    public float GetDistanceToPlayer()
+    {
+        return Vector3.Distance(playerController.transform.position, transform.position);
+    }
+
     public void DestroyShape()
     {
+        if (gameManager != null)
+        {
+            gameManager.RemoveSpawnedPosition(gridPosition);
+        }
         Destroy(gameObject);
     }
 
@@ -48,6 +95,11 @@ public class DrawShape : MonoBehaviour
         polygonInnerRadius = innerRadius;
         isFilled = filled;
         SetPolygonCollider();
+    }
+
+    public void SetGridPosition(Vector3 position)
+    {
+        gridPosition = position;
     }
 
     void SetPolygonCollider()
