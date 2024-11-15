@@ -6,13 +6,13 @@ public class GameManager : MonoBehaviour
     public GameObject enemyPrefab;
     List<DrawShape> shapes = new List<DrawShape>();
 
-    public float polygonOuterRadius = 0.5f;
-    public float polygonInnerRadius = 0.3f;
-    public float gridWidth = 50;
-    public float gridHeight = 50;
+    private float polygonOuterRadius = 0.5f;
+    private float polygonThickness = 0.1f;
+    private float gridWidth = 10;
+    private float gridHeight = 10;
 
-    public int lastTick = 0;
-    public int tickRate = 10000;
+    private int lastTick = 0;
+    private int tickRate = 10000;
 
     void Start()
     {
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
             List<Vector3> positions = GetGridPositions(0, 0, gridWidth, gridHeight);
             foreach (Vector3 position in positions)
             {
-                DrawShape shape = SpawnEnemy(position, 0.1f, 0.5f, 6);
+                DrawShape shape = SpawnEnemy(position, polygonThickness, polygonOuterRadius, 6);
                 shapes.Add(shape);
             }
         }

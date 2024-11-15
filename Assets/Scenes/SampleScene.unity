@@ -151,8 +151,8 @@ MonoBehaviour:
   enemyPrefab: {fileID: 2940892100800383924, guid: f870192b5d7db3744b3fbed948a7d0a4, type: 3}
   polygonOuterRadius: 0.5
   polygonInnerRadius: 0.3
-  gridWidth: 50
-  gridHeight: 50
+  gridWidth: 10
+  gridHeight: 10
   lastTick: 0
   tickRate: 10000
 --- !u!4 &309204679
