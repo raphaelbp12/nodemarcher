@@ -150,8 +150,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerGO: {fileID: 1994682244}
   foodPrefab: {fileID: 918790202824549623, guid: c4c67fb7405247f41bd6b5dff938576d, type: 3}
+  enemyPrefab: {fileID: 8139044141884813766, guid: 27687ff2a88f41f41b3428ad75f73731, type: 3}
+  polygonOuterRadius: 0.5
+  polygonThickness: 0.1
+  gridWidth: 10
+  gridHeight: 10
   tickRate: 10
   minSpawnDistance: 4
+  enemyMinDistanceFromPlayer: 3
+  enemyMinDistanceFromEnemies: 2
+  enemySpawnCountPerTick: 2
 --- !u!4 &309204679
 Transform:
   m_ObjectHideFlags: 0
@@ -402,7 +410,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6515604045568534936, guid: 06c4a77335c8e6449b7070721fe21bab, type: 3}
       propertyPath: continuousSpeed
-      value: 0.5
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 545472251043834474, guid: 06c4a77335c8e6449b7070721fe21bab, type: 3}
       propertyPath: shrinkSpeed

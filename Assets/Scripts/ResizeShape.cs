@@ -45,7 +45,7 @@ public class ResizeShape : MonoBehaviour
             }
         }
         // transform.localScale = new Vector3(currentScale, currentScale, currentScale);
-        drawShape.SetPolygon(drawShape.polygonSides, originalOuterRadius * currentScale, originalInnerRadius * currentScale, drawShape.isFilled);      
+        drawShape.SetPolygon(drawShape.polygonSides, originalOuterRadius * currentScale, originalInnerRadius * currentScale, drawShape.isFilled, drawShape.entityType);      
     }
 
     public void SetScale(float? scale)

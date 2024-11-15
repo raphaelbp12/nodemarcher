@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2940892100800383924, guid: f870192b5d7db3744b3fbed948a7d0a4, type: 3}
       propertyPath: m_Name
-      value: BaseShape
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5244064370712306645, guid: f870192b5d7db3744b3fbed948a7d0a4, type: 3}
       propertyPath: m_LocalPosition.x

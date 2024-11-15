@@ -1,10 +1,11 @@
+// ShapeCollisionHandler.cs
 using UnityEngine;
 
 public class ShapeCollisionHandler : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (gameObject.CompareTag("Player"))
+        if (CompareTag("Player"))
         {
             if (other.CompareTag("Food"))
             {
@@ -19,7 +20,7 @@ public class ShapeCollisionHandler : MonoBehaviour
 
     void HandlePlayerFoodCollision(GameObject food)
     {
-        PlayerController playerController = gameObject.GetComponent<PlayerController>();
+        PlayerController playerController = GetComponent<PlayerController>();
         DrawShape foodShape = food.GetComponent<DrawShape>();
         if (playerController == null)
         {
@@ -32,6 +33,7 @@ public class ShapeCollisionHandler : MonoBehaviour
 
     void HandlePlayerEnemyCollision(GameObject enemy)
     {
-        Debug.Log("Player Collided with enemy" + enemy.gameObject.name);
+        Debug.Log("Player Collided with enemy: " + enemy.name);
+        // Add additional enemy collision handling here
     }
 }

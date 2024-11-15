@@ -1,3 +1,4 @@
+// DrawShape.cs
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(PolygonCollider2D))]
-[RequireComponent(typeof(ResizeShape))]
 public class DrawShape : MonoBehaviour
 {
     Mesh mesh;
@@ -25,20 +25,19 @@ public class DrawShape : MonoBehaviour
     private GameManager gameManager;
 
     [SerializeField]
-    private float distanceToBeDisabled = 5f; // Adjusted to a more reasonable distance
+    private float distanceToBeDisabled = 5f; // Adjust as needed
 
     PlayerController playerController;
     ResizeShape resizeShape;
+
+    public EntityType entityType { get; private set; }
 
     void Start()
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
         resizeShape = GetComponent<ResizeShape>();
-
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-
-        // Find and reference the GameManager in the scene
         gameManager = FindFirstObjectByType<GameManager>();
         if (gameManager == null)
         {
@@ -80,17 +79,14 @@ public class DrawShape : MonoBehaviour
     {
         if (GetDistanceToPlayer() > distanceToBeDisabled)
         {
-            // Notify GameManager and destroy this object
-            if (gameManager != null)
-            {
-                gameManager.RemoveSpawnedPosition(gridPosition);
-            }
-            Destroy(gameObject);
+            DestroyShape();
         }
     }
 
     public float GetDistanceToPlayer()
     {
+        if (playerController == null)
+            return Mathf.Infinity;
         return Vector3.Distance(playerController.transform.position, transform.position);
     }
 
@@ -98,17 +94,18 @@ public class DrawShape : MonoBehaviour
     {
         if (gameManager != null)
         {
-            gameManager.RemoveSpawnedPosition(gridPosition);
+            gameManager.RemoveSpawnedPosition(gridPosition, entityType);
         }
         Destroy(gameObject);
     }
 
-    public void SetPolygon(int sides, float outerRadius, float innerRadius, bool filled)
+    public void SetPolygon(int sides, float outerRadius, float innerRadius, bool filled, EntityType newEntityType)
     {
         polygonSides = sides;
         polygonOuterRadius = outerRadius;
         polygonInnerRadius = innerRadius;
         isFilled = filled;
+        entityType = newEntityType;
         SetPolygonCollider();
     }
 

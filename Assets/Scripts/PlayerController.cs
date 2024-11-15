@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     {
         resizeShape = GetComponent<ResizeShape>();
         drawShape = GetComponent<DrawShape>();
-        drawShape.SetPolygon(12, 0.5f, 0.4f, false);
+        drawShape.SetPolygon(12, 0.5f, 0.4f, false, EntityType.Player);
     }
 
     // Update is called once per frame
