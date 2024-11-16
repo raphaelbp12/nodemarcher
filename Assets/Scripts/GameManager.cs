@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("UI")]
+    public GameObject gameOverPanel;
+
     [Header("References")]
     public GameObject playerPrefab;
     public GameObject foodPrefab;
@@ -72,17 +75,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
-
-    private void HandleInput()
-    {
-        if (playerGameObject != null) return;
-        if (Input.anyKeyDown || Input.anyKey)
-        {
-            SpawnPlayer(true);
-        }
-    }
-
     void SpawnPlayer(bool checkKey)
     {
         if (playerPrefab == null)
@@ -117,7 +109,7 @@ public class GameManager : MonoBehaviour
         Vector2Int playerGridPos = new Vector2Int(Mathf.FloorToInt(playerPos.x), Mathf.FloorToInt(playerPos.y));
 
         List<Vector3> gridPositions = GetGridPositions(playerGridPos.x, playerGridPos.y, gridWidth, gridHeight, hasInitialSpawnOccurred);
-        
+
         // Shuffle gridPositions for random spawn order (optional but recommended)
         ShuffleList(gridPositions);
 
@@ -287,7 +279,6 @@ public class GameManager : MonoBehaviour
         if (spawnedFoodPositions.Contains(gridPos))
         {
             spawnedFoodPositions.Remove(gridPos);
-            Debug.Log($"Removed food grid position: {gridPos}");
         }
         else
         {
@@ -306,11 +297,26 @@ public class GameManager : MonoBehaviour
         if (spawnedEnemyPositions.Contains(gridPos))
         {
             spawnedEnemyPositions.Remove(gridPos);
-            Debug.Log($"Removed enemy grid position: {gridPos}");
         }
         else
         {
             Debug.LogWarning($"Attempted to remove an enemy grid position that wasn't spawned: {gridPos}");
+        }
+    }
+
+    private void HandleInput()
+    {
+        if (Input.anyKeyDown || Input.anyKey)
+        {
+            if (gameOverPanel.activeSelf)
+            {
+                gameOverPanel.SetActive(false);
+                if (playerGameObject == null)
+                {
+                    ResetGame();
+                    SpawnPlayer(true);
+                }
+            }
         }
     }
 
@@ -319,6 +325,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void PlayerDied()
     {
+        gameOverPanel.SetActive(true);
         ResetGame();
         SpawnPlayer(false);
         Debug.Log("Player has died.");
