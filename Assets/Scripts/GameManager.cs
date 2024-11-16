@@ -177,7 +177,6 @@ public class GameManager : MonoBehaviour
     /// <param name="entityType">Type of entity to spawn.</param>
     void SpawnEntity(GameObject prefab, Vector2Int gridPos, Vector3 worldPos, EntityType entityType, float maxRadius, int sides, float thickness)
     {
-        // Check if the position is already occupied
         if (entityType == EntityType.Food && (spawnedFoodPositions.Contains(gridPos) || spawnedEnemyPositions.Contains(gridPos)))
         {
             return; // Already occupied, skip
@@ -196,7 +195,7 @@ public class GameManager : MonoBehaviour
         float randomY = worldPos.y + Random.Range(-diameterDifference, diameterDifference);
 
         Vector3 randomPosition = new Vector3(randomX, randomY, 0);
-        GameObject entity = Instantiate(prefab, randomPosition, Quaternion.identity);
+        GameObject entity = Instantiate(prefab, randomPosition, Quaternion.identity, this.transform); // Parent to GameManager
         DrawShape shape = entity.GetComponent<DrawShape>();
         shape.SetPolygon(sides, randomRadius, randomRadius - thickness, false, entityType);
         shape.SetGridPosition(new Vector3(gridPos.x, gridPos.y, 0));
@@ -337,6 +336,12 @@ public class GameManager : MonoBehaviour
 
     private void ResetGame()
     {
+        // Destroy all children of the GameManager
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         if (playerGameObject != null)
         {
             Destroy(playerGameObject);
