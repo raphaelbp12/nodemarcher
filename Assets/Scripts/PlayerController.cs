@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerScore))]
 [RequireComponent(typeof(DrawShape))]
 [RequireComponent(typeof(ResizeShape))]
 public class PlayerController : MonoBehaviour
@@ -7,6 +8,7 @@ public class PlayerController : MonoBehaviour
     // Components
     Camera mainCamera;
     ResizeShape resizeShape;
+    PlayerScore playerScore;
 
     // Scaling variables
     private bool isKeyBeingHeld = false;
@@ -41,6 +43,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         resizeShape = GetComponent<ResizeShape>();
+        playerScore = GetComponent<PlayerScore>();
 
         gameManager = FindFirstObjectByType<GameManager>();
         if (gameManager == null)
@@ -122,6 +125,7 @@ public class PlayerController : MonoBehaviour
     
     public void TeleportTo(Vector3 position, ResizeShape targetResizeShape)
     {
+        playerScore.ComputeEating(position);
         targetPosition = new Vector3(position.x, position.y);
         // Calculate direction from current position to target
         movementDirection = (targetPosition.Value - transform.position).normalized;
@@ -154,8 +158,10 @@ public class PlayerController : MonoBehaviour
         // deathParticles.Play(); // Uncomment when ParticleSystem is added
 
         // Notify GameManager
+        playerScore.FinishStreak();
         if (gameManager != null)
         {
+            gameManager.scoreManager.SaveScore();
             gameManager.PlayerDied();
         }
 

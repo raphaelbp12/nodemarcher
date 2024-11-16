@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ScoreManager))]
 public class GameManager : MonoBehaviour
 {
     [Header("UI")]
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject foodPrefab;
     public GameObject enemyPrefab;
     private GameObject playerGameObject;
+    public ScoreManager scoreManager { get; private set; }
 
 
     [Header("Food Settings")]
@@ -62,6 +64,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Enemy Prefab is not assigned in the GameManager.");
         }
+        scoreManager = GetComponent<ScoreManager>();
     }
 
     // Update is called once per frame
@@ -93,6 +96,8 @@ public class GameManager : MonoBehaviour
         drawShape.SetPolygon(12, 0.5f, 0.4f, false, EntityType.Player);
         var playerController = playerGameObject.GetComponent<PlayerController>();
         playerController.SetGetKey(checkKey);
+        var playerScore = playerGameObject.GetComponent<PlayerScore>();
+        scoreManager.SetPlayerScore(playerScore);
     }
 
     /// <summary>
