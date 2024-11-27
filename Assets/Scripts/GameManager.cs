@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void SpawnPlayer(bool checkKey)
+    void SpawnPlayer()
     {
         if (playerPrefab == null)
         {
@@ -95,7 +95,6 @@ public class GameManager : MonoBehaviour
         var drawShape = playerGameObject.GetComponent<DrawShape>();
         drawShape.SetPolygon(12, 0.5f, 0.4f, false, EntityType.Player);
         var playerController = playerGameObject.GetComponent<PlayerController>();
-        playerController.SetGetKey(checkKey);
         var playerScore = playerGameObject.GetComponent<PlayerScore>();
         scoreManager.SetPlayerScore(playerScore);
     }
@@ -315,11 +314,8 @@ public class GameManager : MonoBehaviour
             if (gameOverPanel.activeSelf)
             {
                 gameOverPanel.SetActive(false);
-                if (playerGameObject == null)
-                {
-                    ResetGame();
-                    SpawnPlayer(true);
-                }
+                ResetGame();
+                SpawnPlayer();
             }
         }
     }
@@ -330,8 +326,8 @@ public class GameManager : MonoBehaviour
     public void PlayerDied()
     {
         gameOverPanel.SetActive(true);
-        ResetGame();
-        SpawnPlayer(false);
+        // ResetGame();
+        // SpawnPlayer(false);
         Debug.Log("Player has died.");
         // Implement sound and particle effects here when implemented
         // Example:

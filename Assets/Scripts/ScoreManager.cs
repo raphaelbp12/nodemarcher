@@ -25,7 +25,16 @@ public class ScoreManager : MonoBehaviour
         }
         else
         {
-            scoreLabel.text = playerScore.GetCurrentScore();
+            var currentScore = playerScore.GetCurrentScore();
+            if (currentScore > 0)
+            {
+                scoreLabel.text = currentScore.ToString();
+            }
+            else
+            {
+                scoreLabel.text = "";
+            }
+            
             if (playerScore.streakMultiplier > 1)
             {
                 multiplierLabel.text = "x" + playerScore.streakMultiplier;

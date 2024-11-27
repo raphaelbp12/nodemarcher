@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     // Scaling variables
     private bool isKeyBeingHeld = false;
     private float maxScale = 4.0f;
-    private float originalScale;
 
     // Movement variables
     [SerializeField]
@@ -23,8 +22,6 @@ public class PlayerController : MonoBehaviour
     private float continuousSpeed = 5f; // Slower speed for continuous movement
 
     private Vector3? targetPosition = null; // Nullable Vector3 to store the target position
-
-    public bool checkKey { get; private set; }
 
     // Movement state enumeration
     private enum MovementState
@@ -122,7 +119,7 @@ public class PlayerController : MonoBehaviour
         float scale = targetResizeShape.originalOuterRadius / resizeShape.originalOuterRadius;
         resizeShape.OverrideShape(scale);
     }
-    
+
     public void TeleportTo(Vector3 position, ResizeShape targetResizeShape)
     {
         playerScore.ComputeEating(position);
@@ -144,11 +141,6 @@ public class PlayerController : MonoBehaviour
         {
             mainCamera.transform.position = new Vector3(transform.position.x, transform.position.y, mainCamera.transform.position.z);
         }
-    }
-
-    public void SetGetKey(bool value)
-    {
-        checkKey = value;
     }
 
     public void Die()

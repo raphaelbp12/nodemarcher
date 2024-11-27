@@ -21,11 +21,11 @@ public class PlayerScore : MonoBehaviour
 
     }
 
-    public string GetCurrentScore()
+    public int GetCurrentScore()
     {
         int increment = Mathf.CeilToInt(distanceInStreak * streakMultiplier);
         int currentScore = score + increment;
-        return currentScore.ToString();
+        return currentScore;
     }
 
     public void FinishStreak()
